@@ -12,7 +12,6 @@ const previewId = document.getElementById("preview");
 const btnRegistrarId = document.getElementById("btnRegistrar");
 const playerId = document.getElementById("player");
 const exampleModalId = document.getElementById("exampleModal");
-const datosInvest= []
 
 /* FUNCIÓN PARA LIMPIAR EL FORMULARIO */
 const resetForm = () => {
@@ -22,7 +21,7 @@ const resetForm = () => {
   previewId.removeAttribute("style");
 };
 
-/* FUNCIÓN ASYNC / AWAIT PARA ARCHIVO .JSON */
+/* FUNCIÓN ASYNC / AWAIT PARA EXTRAER DATA DEL ARCHIVO .JSON */
 const getAnimalesJson = (async () => {
   try {
     const URL = "assets/animales.json";
@@ -38,6 +37,8 @@ const getAnimalesJson = (async () => {
 const getdata = (async () => {
   const data = await getAnimalesJson;
   const arrayAnimales = data.animales;
+  const animalesInvestigacion = [];
+  let animal = "";
 
   /* FUNCIÓN PARA ENCONTRAR COINCIDENCIA CON LA DATA DEL JSON */
   const funcionFind = () => {
@@ -67,7 +68,6 @@ const getdata = (async () => {
     )
       return alert("Debe completar todos los campos del formulario");
     else {
-      let animal = "";
       const datosInstanciacion = [
         funcionFind().name,
         edadId.value,
@@ -95,54 +95,78 @@ const getdata = (async () => {
         default:
           break;
       }
-      //console.log(animal);
-      datosInvest.push(animal)
-      console.log(datosInvest);
-      crearCards(animal);
+      animalesInvestigacion.push(animal);
+      console.log(animal);
+      //console.log(animaleInvestigacion);
+      crearCards();
+      // modal(animal)
+
       resetForm();
     }
   });
 
   /* INSERTANDO IMAGEN EN EL BOARD DE ANIMALES EN INVEST. */
-  const crearCards = (a) => {
-    console.log(a);
+  const crearCards = () => {
+    animalesId.innerHTML = "";
 
-    animalesId.innerHTML += `        
-        <div class="card col-12 col-md-3 p-0 m-1">
-            <img id="btnImg" class="card-img-top" src="assets/imgs/${a.img}" 
-            height="250px" width="180px" alt="${a.name}">
-            <div class="card-footer p-0 w-100">
-                <button id="btnSonido" class="btn btn-secondary btn-block w-100">
-                    <img src="assets/imgs/audio.svg" style="width: 30px" />
-                </button>
-            </div>
-        </div>        
-        `;
-    /*  EVENTO addEventListener PARA REPRODUCIR SONIDO DEL ANIMAL */
-    btnSonido.addEventListener("click", () => {
-      const repro = () => {
-        playerId.setAttribute("src", `/assets/sounds/${a.sonido}`);
-        playerId.play();
-      };
-      console.log("click btn sonido");
-      // console.log(a.nombre);
-      switch (a.nombre) {
-        case "Leon":
-          a.rugir(repro());
-          break;
-        case "Lobo":
-          a.aullar(repro());
-          break;
-        case "Oso":
-          a.gruñir(repro());
-          break;
-        case "Serpiente":
-          a.sisear(repro());
-          break;
-        case "Aguila":
-          a.chillar(repro());
-          break;
-      }
+    animalesInvestigacion.forEach((animal) => {
+      const DIVContainer = document.createElement("div");
+      const IMGImagen = document.createElement("img");
+      const DIVCardButton = document.createElement("div");
+
+      DIVContainer.classList.add("card");
+
+      IMGImagen.setAttribute("src", `/assets/imgs/${animal.img}`);
+      IMGImagen.classList.add("img-small");
+
+      DIVCardButton.classList.add("card-footer", "p-0");
+
+      DIVCardButton.innerHTML = `
+      <button class="btn btn-primary btn-block">
+        <img src="/assets/imgs/audio.svg" style="width: 10px" />
+      </button>
+    `;
+
+      IMGImagen.addEventListener("click", () => {
+        console.log("click imagen => ", animal);
+        $("#modal").modal("show");
+
+        const modalBodyElement = document.querySelector("#modal .modal-body");
+
+        modalBodyElement.innerHTML = `
+        <img src="/assets/imgs/${animal.Img}" class="img-small"/>
+        <ul class="text-white">
+          <li>Nombre: ${animal.Nombre}</li>
+          <li>Edad: ${animal.Edad}</li>
+          <li>Comentarios: ${animal.Comentarios}</li>
+        </ul>
+      `;
+      });
+
+      DIVCardButton.addEventListener("click", () => {
+        switch (animal.Nombre) {
+          case "Leon":
+            animal.Rugir();
+            break;
+          case "Lobo":
+            animal.Aullar();
+            break;
+          case "Oso":
+            animal.Gruñir();
+            break;
+          case "Serpiente":
+            animal.Sisear();
+            break;
+          case "Aguila":
+            animal.Chillar();
+            break;
+        }
+      });
+
+      DIVContainer.appendChild(IMGImagen);
+      DIVContainer.appendChild(DIVCardButton);
+
+      animalesId.appendChild(DIVContainer);
     });
   };
 })();

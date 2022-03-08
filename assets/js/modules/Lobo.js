@@ -5,9 +5,6 @@ export default class Lobo extends Animal {
     super(nombre, edad, img, comentarios, sonido);
   }
   aullar() {
-    const audio = document.createElement("audio");
-    audio.setAttribute("src", `${this._sonido}`);
-    audio.play();
-    //return "hola lobo";
+    return "hola lobo";
   }
 }
