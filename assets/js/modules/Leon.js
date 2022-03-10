@@ -5,6 +5,6 @@ export default class Leon extends Animal {
     super(nombre, edad, img, comentarios, sonido);
   }
   rugir() {
-    return "hola leon";
+    return rugir();
   }
 }

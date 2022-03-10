@@ -12,8 +12,8 @@ const previewId = document.getElementById("preview");
 const btnRegistrarId = document.getElementById("btnRegistrar");
 const playerId = document.getElementById("player");
 const exampleModalId = document.getElementById("exampleModal");
-const datosInvest= []
-
+const datosInvest = [];
+//let i = 0;
 /* FUNCIÓN PARA LIMPIAR EL FORMULARIO */
 const resetForm = () => {
   animalId.value = "Seleccione un animal";
@@ -95,9 +95,9 @@ const getdata = (async () => {
         default:
           break;
       }
-      //console.log(animal);
-      datosInvest.push(animal)
-      console.log(datosInvest);
+      console.log(animal);
+      //console.log(comentariosId.value);
+      datosInvest.push(animal);
       crearCards(animal);
       resetForm();
     }
@@ -105,27 +105,32 @@ const getdata = (async () => {
 
   /* INSERTANDO IMAGEN EN EL BOARD DE ANIMALES EN INVEST. */
   const crearCards = (a) => {
-    console.log(a);
-
+    console.log(datosInvest);
+    //console.log(datosInvest[datosInvest.length - 1]);
     animalesId.innerHTML += `        
-        <div class="card col-12 col-md-3 p-0 m-1">
-            <img id="btnImg" class="card-img-top" src="assets/imgs/${a.img}" 
-            height="250px" width="180px" alt="${a.name}">
-            <div class="card-footer p-0 w-100">
-                <button id="btnSonido" class="btn btn-secondary btn-block w-100">
-                    <img src="assets/imgs/audio.svg" style="width: 30px" />
-                </button>
-            </div>
-        </div>        
-        `;
-    /*  EVENTO addEventListener PARA REPRODUCIR SONIDO DEL ANIMAL */
-    btnSonido.addEventListener("click", () => {
+      <div class="card col-12 col-md-3 p-0 m-1">
+      <img id="btnImg" class="card-img-top" src="assets/imgs/${a.img}" 
+      height="250px" width="180px" alt="${a.nombre}">
+      <div class="card-footer p-0 w-100">
+      <button id="btnSonido" class="btn btn-secondary btn-block w-100">
+      <img src="assets/imgs/audio.svg" style="width: 30px" />
+      </button>
+      </div>
+      </div>        
+      `;
+    //i++;
+    //console.log(i);
+    const btnImgId = document.getElementById("btnImg");
+    const btnSonidoId = document.getElementById("btnSonido");
+
+    /*  EVENTO addEventListener PARA REPRODUCIR SONIDO DEL ANIMAL con fallas */
+    btnSonidoId.addEventListener("click", () => {
       const repro = () => {
         playerId.setAttribute("src", `/assets/sounds/${a.sonido}`);
         playerId.play();
       };
       console.log("click btn sonido");
-      // console.log(a.nombre);
+      console.log(a.nombre);
       switch (a.nombre) {
         case "Leon":
           a.rugir(repro());
@@ -143,6 +148,24 @@ const getdata = (async () => {
           a.chillar(repro());
           break;
       }
+    });
+
+    /*  EVENTO addEventListener PARA TARJETA MODAL DEL ANIMAL No Funcional aún*/
+    btnImgId.addEventListener("click", () => {
+      console.log("click btn imagen");
+      exampleModalId.innerHTML = `
+              <div class="modal-dialog modal-dialog-centered w-25" role="document">
+                <div class="modal-content bg-dark">
+                  <div class="modal-body">
+                    <img src="/assets/imgs/${a.img}"class="mx-auto d-block card-display"/>
+                    <ul class="text-white list-unstyled">
+                      <li>Nombre: ${a.nombre}</li>
+                      <li>Edad: ${a.edad}</li>
+                      <li>Comentarios:${a.comentarios} </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>`;
     });
   };
 })();

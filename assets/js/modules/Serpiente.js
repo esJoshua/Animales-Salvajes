@@ -5,6 +5,6 @@ export default class Serpiente extends Animal {
     super(nombre, edad, img, comentarios, sonido);
   }
   sisear() {
-    return "hola serpiente";
+    return sonido;
   }
 }

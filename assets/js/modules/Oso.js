@@ -5,7 +5,6 @@ export default class Oso extends Animal {
     super(nombre, edad, img, comentarios, sonido);
   }
   gruñir() {
-    
-    return this.sonido;
+    return sonido;
   }
 }

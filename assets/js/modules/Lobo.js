@@ -5,6 +5,6 @@ export default class Lobo extends Animal {
     super(nombre, edad, img, comentarios, sonido);
   }
   aullar() {
-    return "hola lobo";
+    return sonido;
   }
 }

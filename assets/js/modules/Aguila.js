@@ -5,6 +5,6 @@ export default class Aguila extends Animal {
     super(nombre, edad, img, comentarios, sonido);
   }
   chillar() {
-    return "hola aguila";
+    return sonido;
   }
 }
